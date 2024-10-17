@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>The RESIDE Package</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">The RESIDE Package</h1>
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The Rapid Easy Synthesis to Inform Data Extraction (RESIDE) Package was developed to assist researchers with planning analysis, prior to obtaining data from Trusted Research Environments (TREs) also known as safe havens <span class="citation">(Hubbard et al. 2021; Gao et al. 2022; Lea et al. 2016)</span>.</p>
+<p>Obtaining data from TREs is can be a lengthy process due to data governance <span class="citation">(Gao et al. 2022)</span>, in which time a researcher may not be able to start their analysis. With the RESIDE package, a researcher can obtain the marginal distributions of a dataset held by a trusted research environment and simulate a synthetic dataset. Thus allowing them to explore what the data looks like prior to gaining access to it. This approach allows the researched to explore variables, including their missingness and plan their analysis appropriately. Additionally, it allows the research to start writing code for their analysis as the structure of the synthetic data will be the same as that on the TRE. The RESIDE package also allows the researcher to specify <strong>assumed</strong> correlations based on expertise or previous research when simulating the data to also allow the researcher to test analysis.</p>
+<p><strong>NB</strong> When using correlations it is not entirely possible to maintain all the marginal distributions.</p>
+</div>
+<div id="methods" class="section level1">
+<h1>Methods</h1>
+</div>
+<div id="for-tres" class="section level1">
+<h1>For TRE’s</h1>
+<div id="generating-marginal-distributions" class="section level2">
+<h2>Generating Marginal Distributions</h2>
+<p>Marginal distributions can be generated for a given dataset within a TRE using the <code>get_marginal_distributions()</code> function. Marginal distributions will be created for all variable types including:</p>
+<ul>
+<li>Binary</li>
+<li>Categorical</li>
+<li>Continuous</li>
+</ul>
+<p>Binary variables are detected automatically by testing the min and maximum values of numeric variables, if they fall between 0 and 1, the variable is assumed binary; currently there is no way of manually overriding this, but this is planned for a future update. For binary variables the mean is used to represent the marginal distributions, allowing this to be used as a probability when simulating data.</p>
+<p>Currently any factor variable or variable containing non numeric characters will be treated as categorical, this however means that the burden is on the TRE to ensure that any variables containing non numeric characters are categorical. For categorical variables, the number of each category is used to represent the marginal distributions, allowing the probability of each category to be calculated when simulating data.</p>
+<p><strong>NB</strong> Currently there is no automated checking to see if a category contains less than a certain percent, or if there are an excess number of categories therefore it is up to the TRE to ensure that this is checked and if necessary adjusted prior to generating the marginal distributions.</p>
+<p>Any other numeric variable is treated as a continuous variable. To prevent the need to specify a distribution when simulating data, continuous variables are transformed using Ordered Quantile normalisation from the <code>bestNormalize</code> package. The mean and standard deviation of the transformed variable(s) are used as the marginal distributions to allow the simulation of the variable using a normal distribution. Additionally the mapping table is exported to allow the variables to be back transformed.</p>
+</div>
+<div id="exporting-marginal-distributions" class="section level2">
+<h2>Exporting Marginal Distributions</h2>
+<p>Marginal distributions are exported using the <code>export_marginal_distributions</code> function. Marginal distributions can be printed prior to export using the <code>print</code> function. See Exporting Marginal Distributions for more details.</p>
+</div>
+</div>
+<div id="for-end-users" class="section level1">
+<h1>For End Users</h1>
+<div id="importing-marginal-distributions" class="section level2">
+<h2>Importing Marginal Distributions</h2>
+<p>Marginal distributions can be imported using the <code>import_marginal_distributions</code> function. See importing marginal distributions for more details.</p>
+</div>
+<div id="data-simulation" class="section level2">
+<h2>Data Simulation</h2>
+<p>Data is simulated from a cumulative multivariate copula distribution using the <code>simstudy</code> package. Data can be simulated from marginal distributions using the <code>synthesise_data</code> function. See Synthesising Data and Synthesising Data with Correlations for more details.</p>
+</div>
+</div>
+<div id="limitations" class="section level1">
+<h1>Limitations</h1>
+<p>This package has several limitations, some of which will be overcome with future updates.</p>
+<div id="binary-variables" class="section level2">
+<h2>Binary Variables</h2>
+<p>The package currently assumes that numeric variables which lie between 0 and 1 are binary, with no current way to override this. This will be address in a future update.</p>
+</div>
+<div id="categorical-variables" class="section level2">
+<h2>Categorical Variables</h2>
+<p>The package currently assumes any variable of a character type is a categorical variable, this may cause issues if a dataset has erroneous characters. Additionally there is no limit on the number of categories or the minimum number within a category, leaving it up to the TRE to check this and preprocess these variables. Both these limitations will be addressed in future updates.</p>
+</div>
+<div id="correlations" class="section level2">
+<h2>Correlations</h2>
+<p>It is not entirely possible to maintain all the marginal distributions and allow correlations to be specified, this is a known problem and is unlikely to be addressed.</p>
+<div id="refs" class="references hanging-indent">
+<div id="ref-gao_national_2022">
+<p>Gao, Chuang, Mark McGilchrist, Shahzad Mumtaz, Christopher Hall, Lesley Ann Anderson, John Zurowski, Sharon Gordon, et al. 2022. “A National Network of Safe Havens: Scottish Perspective.” <em>Journal of Medical Internet Research</em> 24 (3): e31684. <a href="https://doi.org/10.2196/31684">https://doi.org/10.2196/31684</a>.</p>
+</div>
+<div id="ref-hubbard_trusted_2021">
+<p>Hubbard, Tim, Gerry Reilly, Susheel Varma, and David Seymour. 2021. “Trusted Research Environments (TRE) Green Paper.” Zenodo. <a href="https://doi.org/10.5281/zenodo.4594704">https://doi.org/10.5281/zenodo.4594704</a>.</p>
+</div>
+<div id="ref-lea_data_2016">
+<p>Lea, Nathan Christopher, Jacqueline Nicholls, Christine Dobbs, Nayha Sethi, James Cunningham, John Ainsworth, Martin Heaven, et al. 2016. “Data Safe Havens and Trust: Toward a Common Understanding of Trusted Research Platforms for Governing Secure and Ethical Health Research.” <em>JMIR Medical Informatics</em> 4 (2): e22. <a href="https://doi.org/10.2196/medinform.5571">https://doi.org/10.2196/medinform.5571</a>.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
