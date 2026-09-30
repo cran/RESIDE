@@ -12,7 +12,7 @@
 
 
 
-<title>Importing Marginal Distributions</title>
+<title>Exporting Marginal Distributions</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -337,49 +337,122 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">Importing Marginal Distributions</h1>
+<h1 class="title toc-ignore">Exporting Marginal Distributions</h1>
 
 
 
-<p>Marginal distributions provided by a TRE should contain the following
-files:</p>
-<ul>
-<li><em>binary_variables.csv</em></li>
-<li><em>categorical_variables.csv</em></li>
-<li><em>continuous_variables.csv</em></li>
-<li><em>continuous_quantiles.csv</em></li>
-<li><em>summary.csv</em></li>
-</ul>
-<p>Depending on the data from the TRE some of the files may not be
-present.</p>
-<p>The marginal distributions can be imported using the
-<code>import_marginal_distributions()</code> function. By default the
-marginal distributions will be imported from the current working
-directory:</p>
+<div id="obtaining-marginal-distributions" class="section level1">
+<h1>Obtaining Marginal Distributions</h1>
+<p>Marginal distributions should first be obtained using the
+<code>get_marginal_distributions()</code> function.</p>
+<p>To obtain the marginal distributions for all variables you should
+only specify the dataset:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(RESIDE)</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>marginals <span class="ot">&lt;-</span> <span class="fu">import_marginal_distributions</span>()</span></code></pre></div>
-<p>The folder of the marginals can be changes using the
-<code>folder_path</code> parameter of the
-<code>import_marginal_distributions()</code> function:</p>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>marginals <span class="ot">&lt;-</span> <span class="fu">get_marginal_distributions</span>(IST)</span></code></pre></div>
+<p>To obtain marginal distributions for select variables, you should
+specify the variables using the variables parameter:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(RESIDE)</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>marginals <span class="ot">&lt;-</span> <span class="fu">import_marginal_distributions</span>(</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">folder_path =</span> <span class="st">&quot;/Users/ryan/marginals&quot;</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>)</span></code></pre></div>
-Additionally any of the file names can be changed using the relevant
-<code>import_marginal_distributions()</code>
-<details>
-<summary>
-parameters:
-</summary>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>marginals <span class="ot">&lt;-</span> <span class="fu">get_marginal_distributions</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  IST,</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>    <span class="st">&quot;SEX&quot;</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>    <span class="st">&quot;AGE&quot;</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>    <span class="st">&quot;ID14&quot;</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>    <span class="st">&quot;RSBP&quot;</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>    <span class="st">&quot;RATRIAL&quot;</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>    <span class="st">&quot;SET14D&quot;</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>    <span class="st">&quot;DSIDED&quot;</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  )</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="printing-the-marginal-distributions-prior-to-export" class="section level1">
+<h1>Printing the Marginal Distributions Prior to Export</h1>
+<p>Marginal distributions can be printed when generating marginal
+distributions using the print parameter:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(RESIDE)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>marginals <span class="ot">&lt;-</span> <span class="fu">get_marginal_distributions</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  IST,</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="at">print =</span> <span class="cn">TRUE</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>)</span></code></pre></div>
+<p>Or from a stored marginals object:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">library</span>(RESIDE)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>marginals <span class="ot">&lt;-</span> <span class="fu">get_marginal_distributions</span>(IST)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">print</span>(marginals)</span></code></pre></div>
+</div>
+<div id="exporting-marginal-distributions" class="section level1">
+<h1>Exporting Marginal Distributions</h1>
+<p>Marginal distributions can be exported using the
+<code>export_marginal_distributions()</code> function, specifying the
+marginal distributions (generated by `get_marginal_distributions()’) and
+a folder path:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">library</span>(RESIDE)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>marginals <span class="ot">&lt;-</span> <span class="fu">get_marginal_distributions</span>(IST)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">export_marginal_distributions</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  marginals,</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="at">folder_path =</span> <span class="st">&quot;/Users/ryan/marginals&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>)</span></code></pre></div>
+<p>This folder should exist and not contain any previously exported
+marginal distributions. You can create the folder automatically using
+the create_folder parameter:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">library</span>(RESIDE)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>marginals <span class="ot">&lt;-</span> <span class="fu">get_marginal_distributions</span>(IST)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="fu">export_marginal_distributions</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  marginals,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="at">folder_path =</span> <span class="st">&quot;/Users/ryan/marginals&quot;</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="at">create_folder =</span> <span class="cn">TRUE</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>)</span></code></pre></div>
+<div id="files-created-by-export_marginal_distributions" class="section level2">
+<h2>Files created by <code>export_marginal_distributions()</code></h2>
+<p>The following files will be created by the
+<code>export_marginal_distributions()</code> function:</p>
 <ul>
-<li><code>binary_variables_file</code></li>
-<li><code>categorical_variables_file</code></li>
-<li><code>continuous_variables_file</code></li>
-<li><code>continuous_quantiles_file</code></li>
-<li><code>summary_file</code></li>
+<li><em>binary_variables.csv</em> - Contains the marginal distributions
+for binary variables including:
+<ul>
+<li>Variable Name
+<ul>
+<li>Mean</li>
+<li>Number of Missing Observations</li>
+</ul></li>
+</ul></li>
+<li><em>categorical_variables.csv</em> Contains the marginal
+distributions for categorical variables including:
+<ul>
+<li>Variable Name &amp; Category Name</li>
+<li>Number of Observations in Each Category</li>
+<li><strong>NB</strong> Missing Observations are coded as a separate
+category labelled missing.</li>
+</ul></li>
+<li><em>continuous_variables.csv</em> - Contains the marginal
+distributions for continuous variables including:
+<ul>
+<li>Variable Name</li>
+<li>Transformed Mean</li>
+<li>Transformed Standard Deviation</li>
+<li>Number of Missing Observations</li>
+<li>Number of Decimal Places</li>
+</ul></li>
+<li><em>continuous_quantiles.csv</em> - Contains the Quantile mapping to
+allow for back transformation. For each continuous variable this
+contains:
+<ul>
+<li>The original quantile value</li>
+<li>The transformed quantile value</li>
+<li>An epsilon value to indicate the amount of thinning applied</li>
+</ul></li>
+<li><em>summary.csv</em> - Contains and overall summary of the dataset
+including:
+<ul>
+<li>Number of Rows</li>
+<li>Number of Columns</li>
+<li>Variable Names (for validation)</li>
+</ul></li>
 </ul>
-</details>
-<p>However this is generally not advised.</p>
+<p>These files should then be sent to the user.</p>
+<p><strong>NB</strong> If there are no variables of a certain type the
+corresponding file will not be created.</p>
+</div>
+</div>
 
 
 

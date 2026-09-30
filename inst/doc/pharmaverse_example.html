@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Worked Example Using Multiple Tables</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Worked Example Using Multiple Tables</h1>
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This R Markdown document illustrates example usage of the RESIDE
+package with multiple related tables, using the Demographics (DM) and
+Adverse Events (AE) SDTM domains from the <a href="https://pharmaverse.github.io/pharmaversesdtm/">pharmaversesdtm</a>
+package. The tables are linked by a subject identifier
+(<code>USUBJID</code>), DM has one row per subject and AE has one row
+per adverse event.</p>
+</div>
+<div id="setup" class="section level1">
+<h1>Setup</h1>
+<p>Load the RESIDE package and set a seed for reproducibility and store
+the folder directory for export / import.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Load the Library</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(RESIDE)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># Load dplyr for data manipulation</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt; Warning: package &#39;dplyr&#39; was built under R version 4.5.3</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co"># Set the seed</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co"># Store the folder path used for import / export</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>folder_path <span class="ot">&lt;-</span> <span class="fu">tempdir</span>()</span></code></pre></div>
+</div>
+<div id="summarise-original-data" class="section level1">
+<h1>Summarise original data</h1>
+<p>Store the tables in a named list, the names are used to identify the
+tables in the marginal distributions.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Store the tables in a named list</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>dfs <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">dm =</span> pharmaversesdtm<span class="sc">::</span>dm,</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">ae =</span> pharmaversesdtm<span class="sc">::</span>ae</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>)</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co"># Number of rows in each table</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="fu">sapply</span>(dfs, nrow)</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt;   dm   ae </span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt;  306 1191</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co"># Number of subjects in each table</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="fu">sapply</span>(dfs, <span class="cf">function</span>(df) <span class="fu">length</span>(<span class="fu">unique</span>(df<span class="sc">$</span>USUBJID)))</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt;  dm  ae </span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; 306 225</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co"># Treatment arms of the subjects</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="fu">table</span>(dfs<span class="sc">$</span>dm<span class="sc">$</span>ARM)</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt;              Placebo       Screen Failure Xanomeline High Dose </span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt;                   86                   52                   84 </span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt;  Xanomeline Low Dose </span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt;                   84</span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co"># Severity of the adverse events</span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="fu">table</span>(dfs<span class="sc">$</span>ae<span class="sc">$</span>AESEV)</span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt;     MILD MODERATE   SEVERE </span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt;      770      378       43</span></span></code></pre></div>
+</div>
+<div id="fit-a-logistic-regression-model-on-the-original-data" class="section level1">
+<h1>Fit a logistic regression model on the original data</h1>
+<p>Join the adverse events to the demographics of the subject and fit a
+logistic regression model for the odds of an adverse event being
+moderate or severe, by age, sex and treatment arm. The same function is
+used for the original and synthesised data.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Join the adverse events to the demographics of each subject</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>prepare_ae_data <span class="ot">&lt;-</span> <span class="cf">function</span>(dm, ae) {</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  ae <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>    <span class="fu">select</span>(USUBJID, AESEV) <span class="sc">|&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>    <span class="fu">inner_join</span>(<span class="fu">select</span>(dm, USUBJID, AGE, SEX, ARM), <span class="at">by =</span> <span class="st">&quot;USUBJID&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>    <span class="co"># Remove screen failures and adverse events without a severity</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>    <span class="fu">filter</span>(ARM <span class="sc">!=</span> <span class="st">&quot;Screen Failure&quot;</span>, AESEV <span class="sc">!=</span> <span class="st">&quot;&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>      <span class="at">MOD_SEV =</span> AESEV <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;MODERATE&quot;</span>, <span class="st">&quot;SEVERE&quot;</span>),</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>      <span class="at">ARM =</span> <span class="fu">relevel</span>(<span class="fu">factor</span>(ARM), <span class="st">&quot;Placebo&quot;</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>    )</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>}</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>ae_original <span class="ot">&lt;-</span> <span class="fu">prepare_ae_data</span>(dfs<span class="sc">$</span>dm, dfs<span class="sc">$</span>ae)</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co"># Proportion of moderate or severe adverse events by treatment arm</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(ae_original<span class="sc">$</span>ARM, ae_original<span class="sc">$</span>MOD_SEV), <span class="dv">1</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt;                       </span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt;                            FALSE      TRUE</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt;   Placebo              0.7275748 0.2724252</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt;   Xanomeline High Dose 0.6725275 0.3274725</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt;   Xanomeline Low Dose  0.5632184 0.4367816</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co"># Fit a logistic regression model</span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>glm.original <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>  MOD_SEV <span class="sc">~</span> AGE <span class="sc">+</span> SEX <span class="sc">+</span> ARM,</span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a>  <span class="at">data =</span> ae_original,</span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a>  <span class="at">family =</span> binomial</span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a>)</span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="co"># Output the coefficients of the model</span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="fu">summary</span>(glm.original)<span class="sc">$</span>coefficients</span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="co">#&gt;                             Estimate  Std. Error    z value     Pr(&gt;|z|)</span></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="co">#&gt; (Intercept)             -0.305106216 0.611013964 -0.4993441 6.175370e-01</span></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a><span class="co">#&gt; AGE                     -0.006640127 0.007838388 -0.8471291 3.969232e-01</span></span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a><span class="co">#&gt; SEXM                    -0.435382516 0.126327520 -3.4464582 5.679865e-04</span></span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="co">#&gt; ARMXanomeline High Dose  0.331225289 0.167062099  1.9826477 4.740679e-02</span></span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="co">#&gt; ARMXanomeline Low Dose   0.740406571 0.162802809  4.5478734 5.419071e-06</span></span></code></pre></div>
+<p><strong>NB</strong> Adverse events from the same subject are not
+independent, a mixed effects model would be more appropriate, however a
+logistic regression model is used here for simplicity.</p>
+</div>
+<div id="get-the-marginal-distributions" class="section level1">
+<h1>Get the marginal distributions</h1>
+<p>Use the <code>get_marginal_distributions()</code> function to get the
+marginal distributions of the tables, specifying the column that
+identifies each subject using the <code>subject_identifier</code>
+parameter.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Get the Marginal Distributions of both tables</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>marginals <span class="ot">&lt;-</span> <span class="fu">get_marginal_distributions</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  dfs,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">subject_identifier =</span> <span class="st">&quot;USUBJID&quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; Registered S3 method overwritten by &#39;butcher&#39;:</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt;   method                 from    </span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt;   as.character.dev_topic generics</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co"># Summarise the Marginal Distributions</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="fu">summary</span>(marginals)</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; Summary of Marginal Distributions</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; Number of Data Frames: 2 </span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; Subject Identifier: USUBJID </span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; Number of Subjects: 306 </span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; Common Columns: STUDYID </span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt;  Data Frame Rows Subjects Variables Categorical Binary Continuous Dates Missing</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt;          dm  306      306        27          17      0         10     8      10</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt;          ae 1191      225        34          28      0          6     3      12</span></span></code></pre></div>
+<p>Columns that are present in every table (other than the subject
+identifier), are identified as common columns, in this case the study
+identifier <code>STUDYID</code>.</p>
+</div>
+<div id="export-the-marginal-distributions" class="section level1">
+<h1>Export the marginal distributions</h1>
+<p>Export the marginal distributions using the
+<code>export_marginal_distributions()</code> function, using the
+<code>force</code> parameter to override any existing files.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Export the Marginal Distributions</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">export_marginal_distributions</span>(marginals,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>                              <span class="at">folder_path =</span> folder_path,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>                              <span class="at">force =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; Exporting  Categorical variables to:  C:\Users\Ryan\AppData\Local\Temp\RtmpMRdU12/categorical_variables.csv</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; Exporting  Continuous variables to:  C:\Users\Ryan\AppData\Local\Temp\RtmpMRdU12/continuous_variables.csv</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; Exporting  Summary to:  C:\Users\Ryan\AppData\Local\Temp\RtmpMRdU12/summary.csv</span></span></code></pre></div>
+</div>
+<div id="reimport-marginal-distributions" class="section level1">
+<h1>Reimport marginal distributions</h1>
+<p>Import the exported marginal distributions using the
+<code>import_marginal_distributions()</code> function</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Import the Marginal Distributions</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>imported_marginals <span class="ot">&lt;-</span> <span class="fu">import_marginal_distributions</span>(<span class="at">folder_path =</span> folder_path)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt; Info: No file for binary variables found</span></span></code></pre></div>
+</div>
+<div id="synthesise-data-from-marginal-distributions-without-correlations" class="section level1">
+<h1>Synthesise data from marginal distributions (without
+correlations)</h1>
+<p>Synthesise data from the imported marginals using the
+<code>synthesise_data</code> function, for multiple tables a named list
+of data frames is returned.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Synthesise the tables from the imported Marginal Distributions (without correlations)</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>sim_dfs <span class="ot">&lt;-</span> <span class="fu">synthesise_data</span>(imported_marginals)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># Number of rows in each table</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">sapply</span>(sim_dfs, nrow)</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt;   dm   ae </span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt;  306 1191</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co"># Number of subjects in each table</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="fu">sapply</span>(sim_dfs, <span class="cf">function</span>(df) <span class="fu">length</span>(<span class="fu">unique</span>(df<span class="sc">$</span>USUBJID)))</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt;  dm  ae </span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt; 306 225</span></span></code></pre></div>
+<p>The number of rows and subjects of each table are maintained,
+synthesised subjects are identified by a number, which links the
+subjects between the tables.</p>
+</div>
+<div id="fit-a-logistic-regression-model-on-the-synthesised-data" class="section level1">
+<h1>Fit a logistic regression model on the synthesised data</h1>
+<p>Fit the same logistic regression model as earlier except this time on
+the synthesised data.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>ae_sim <span class="ot">&lt;-</span> <span class="fu">prepare_ae_data</span>(sim_dfs<span class="sc">$</span>dm, sim_dfs<span class="sc">$</span>ae)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co"># Proportion of moderate or severe adverse events by treatment arm</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(ae_sim<span class="sc">$</span>ARM, ae_sim<span class="sc">$</span>MOD_SEV), <span class="dv">1</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt;                       </span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt;                            FALSE      TRUE</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt;   Placebo              0.6265664 0.3734336</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt;   Xanomeline High Dose 0.6234310 0.3765690</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt;   Xanomeline Low Dose  0.5913043 0.4086957</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co"># Fit a logistic regression model on the synthesised data</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>glm.sim <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  MOD_SEV <span class="sc">~</span> AGE <span class="sc">+</span> SEX <span class="sc">+</span> ARM,</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>  <span class="at">data =</span> ae_sim,</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>  <span class="at">family =</span> binomial</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>)</span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co"># Output the coefficients of the model</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="fu">summary</span>(glm.sim)<span class="sc">$</span>coefficients</span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt;                             Estimate  Std. Error    z value  Pr(&gt;|z|)</span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; (Intercept)             -0.630833056 0.601786974 -1.0482664 0.2945159</span></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt; AGE                      0.002193439 0.007856429  0.2791903 0.7800988</span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt; SEXM                    -0.108603407 0.131271564 -0.8273186 0.4080565</span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt; ARMXanomeline High Dose  0.017967552 0.169169777  0.1062102 0.9154156</span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="co">#&gt; ARMXanomeline Low Dose   0.147867959 0.151204267  0.9779351 0.3281064</span></span></code></pre></div>
+<p>Without correlations the variables are synthesised independently, so
+there is no relationship between the treatment arm and the severity of
+the adverse events.</p>
+</div>
+<div id="synthesise-data-with-correlations" class="section level1">
+<h1>Synthesise data with correlations</h1>
+<p>Synthesise data from the imported marginals with assumed
+correlations, using the <code>correlations</code> parameter to specify a
+list of correlations created with the <code>correlation()</code>
+function. Categorical variables are correlated using a single category,
+specified with <code>factor_name.x</code> or <code>factor_name.y</code>,
+and the tables of the variables can be specified with
+<code>df_name.x</code> and <code>df_name.y</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Synthesise the tables specifying assumed correlations</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>sim_dfs_cor <span class="ot">&lt;-</span> <span class="fu">synthesise_data</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  imported_marginals,</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="at">correlations =</span> <span class="fu">list</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>    <span class="co"># Subjects on placebo are more likely to have mild adverse events</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>    <span class="fu">correlation</span>(</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>      <span class="st">&quot;ARM&quot;</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>      <span class="st">&quot;AESEV&quot;</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>      <span class="fl">0.2</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>      <span class="at">df_name.x =</span> <span class="st">&quot;dm&quot;</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>      <span class="at">df_name.y =</span> <span class="st">&quot;ae&quot;</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>      <span class="at">factor_name.x =</span> <span class="st">&quot;Placebo&quot;</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>      <span class="at">factor_name.y =</span> <span class="st">&quot;MILD&quot;</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a>    ),</span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a>    <span class="co"># Male subjects are younger</span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>    <span class="fu">correlation</span>(<span class="st">&quot;AGE&quot;</span>, <span class="st">&quot;SEX&quot;</span>, <span class="sc">-</span><span class="fl">0.2</span>, <span class="at">factor_name.y =</span> <span class="st">&quot;M&quot;</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>  )</span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a>)</span></code></pre></div>
+<p>Correlated variables are synthesised together, one row per subject,
+and joined to each table by subject. Therefore correlations between
+tables are between subjects, and a correlated variable takes a single
+value for each subject within a table, in this case every adverse event
+of a subject has the same severity.</p>
+</div>
+<div id="fit-a-logistic-regression-model-on-the-synthesised-data-with-correlations" class="section level1">
+<h1>Fit a logistic regression model on the synthesised data with
+correlations</h1>
+<p>Using the synthesised data (with correlations) fit the same logistic
+regression model as earlier.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>ae_sim_cor <span class="ot">&lt;-</span> <span class="fu">prepare_ae_data</span>(sim_dfs_cor<span class="sc">$</span>dm, sim_dfs_cor<span class="sc">$</span>ae)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co"># Proportion of moderate or severe adverse events by treatment arm</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(ae_sim_cor<span class="sc">$</span>ARM, ae_sim_cor<span class="sc">$</span>MOD_SEV), <span class="dv">1</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt;                       </span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt;                            FALSE      TRUE</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt;   Placebo              0.7005988 0.2994012</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt;   Xanomeline High Dose 0.6027778 0.3972222</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt;   Xanomeline Low Dose  0.6548387 0.3451613</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co"># Fit a logistic regression model on the synthesised data (with correlations)</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>glm.sim.cor <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>  MOD_SEV <span class="sc">~</span> AGE <span class="sc">+</span> SEX <span class="sc">+</span> ARM,</span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>  <span class="at">data =</span> ae_sim_cor,</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a>  <span class="at">family =</span> binomial</span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a>)</span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="co"># Output the coefficients of the model</span></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="fu">summary</span>(glm.sim.cor)<span class="sc">$</span>coefficients</span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="co">#&gt;                             Estimate  Std. Error    z value    Pr(&gt;|z|)</span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co">#&gt; (Intercept)             -1.434536276 0.653056342 -2.1966501 0.028045445</span></span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="co">#&gt; AGE                      0.006320768 0.008338343  0.7580365 0.448429162</span></span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="co">#&gt; SEXM                     0.240313969 0.136579469  1.7595175 0.078489647</span></span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt; ARMXanomeline High Dose  0.417586363 0.161300094  2.5888786 0.009628903</span></span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a><span class="co">#&gt; ARMXanomeline Low Dose   0.244232900 0.170323799  1.4339329 0.151591410</span></span></code></pre></div>
+<p>With the assumed correlation, adverse events of subjects on placebo
+are less likely to be moderate or severe, allowing the analysis to be
+tested before access to the original data is granted.</p>
+<p><strong>NB</strong> The correlation specified is that of the
+underlying multivariate normal distribution (Copula), the correlation
+observed in the synthesised data will differ, particularly for
+categorical variables. It is not possible to entirely maintain all the
+marginal distributions when specifying correlations.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

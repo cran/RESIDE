@@ -6,12 +6,12 @@ knitr::opts_chunk$set(
 )
 
 ## ----import_marginal_distributions--------------------------------------------
-#  library(RESIDE)
-#  marginals <- import_marginal_distributions()
+# library(RESIDE)
+# marginals <- import_marginal_distributions()
 
 ## ----import_marginal_distributions_folder-------------------------------------
-#  library(RESIDE)
-#  marginals <- import_marginal_distributions(
-#    folder_path = "/Users/ryan/marginals"
-#  )
+# library(RESIDE)
+# marginals <- import_marginal_distributions(
+#   folder_path = "/Users/ryan/marginals"
+# )
 

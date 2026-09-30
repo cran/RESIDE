@@ -6,36 +6,45 @@ knitr::opts_chunk$set(
 )
 
 ## ----synthesise data----------------------------------------------------------
-#  library(RESIDE)
-#  marginals <- import_marginal_distributions()
-#  simulated_data <- synthesise_data(marginals)
-
-## ----export_cor_matrix--------------------------------------------------------
-#  library(RESIDE)
-#  marginals <- import_marginal_distributions()
-#  export_empty_cor_matrix(marginals, folder_path = tempdir())
-
-## ----print_cor_matrix, eval = TRUE, echo = FALSE------------------------------
-.cor_matrix <- utils::read.csv("correlation_matrix.csv")
-.cor_matrix <- tibble::column_to_rownames(.cor_matrix, names(.cor_matrix)[1])
-DT::datatable(
-  .cor_matrix,
-  options = list(
-    pageLength=10, scrollX='400px'
-  )
-)
-
-## ----import_cor_matrix--------------------------------------------------------
-#  library(RESIDE)
-#  correlation_matrix <- import_cor_matrix()
+# library(RESIDE)
+# marginals <- import_marginal_distributions()
+# simulated_data <- synthesise_data(marginals)
 
 ## ----synthesise_data_with_correlations----------------------------------------
-#  library(RESIDE)
-#  marginals <- import_marginal_distributions()
-#  export_empty_cor_matrix(marginals)
-#  correlation_matrix <- import_cor_matrix()
-#  simulated_data <- synthesise_data(
-#    marginals,
-#    correlation_matrix
-#  )
+# library(RESIDE)
+# marginals <- import_marginal_distributions()
+# simulated_data <- synthesise_data(
+#   marginals,
+#   correlations = list(
+#     correlation("AGE", "RSBP", 0.3)
+#   )
+# )
+
+## ----categorical_correlations-------------------------------------------------
+# simulated_data <- synthesise_data(
+#   marginals,
+#   correlations = list(
+#     correlation("SEX", "AGE", -0.2, factor_name.x = "M"),
+#     correlation("RATRIAL", "RSBP", 0.1, factor_name.x = "Y")
+#   )
+# )
+
+## ----multi_table_correlations-------------------------------------------------
+# simulated_data <- synthesise_data(
+#   marginals,
+#   correlations = list(
+#     # Both variables in the same data frame
+#     correlation("DOMAIN", "AESTDY", 0.2, df_name = "ae", factor_name.x = "AE"),
+#     # Variables in different data frames
+#     correlation(
+#       "SEX",
+#       "AESEV",
+#       0.3,
+#       df_name.x = "dm",
+#       df_name.y = "ae",
+#       factor_name.x = "M",
+#       factor_name.y = "SEVERE"
+#     )
+#   )
+# )
 
